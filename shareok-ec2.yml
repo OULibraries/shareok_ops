@@ -1,0 +1,52 @@
+---
+- hosts: localhost
+  vars:
+    sshcfg: '/etc/ansible/ssh.cfg'
+    server: 'lib.s2.shareok.prod'
+    src: '/srv/migrate/'
+    dest: 'downloads/'
+
+  tasks:
+  #- include: fetch.yml
+  - include: ec2.yml
+    vars:
+      ec2_tag_Name: "lib-amz-shareok-test"
+      ec2_tag_App: "ShareOK"
+      ec2_tag_Unit: "Repository Services"
+      ec2_tag_Workload: "Unprovisioned"
+      ec2_volume_size: 64
+#  - include: push.yml
+- hosts: tag_Workload_Unprovisioned
+  vars:
+    dspace_git: 'https://atmire.com/git/clients/oklahoma'
+    dspace_src: '/vagrant/shareok_dspace'
+    dspace_run: '/srv/shareok/dspace'
+    dspace_env:
+      MAVEN_PROFILE: 'vagrant'
+      MAVEN: 'mvn'
+      ANT: 'ant'
+      TOMCAT: '/usr/share/tomcat'
+      ANT_OPTS: '-Xms128m -Xmx800m'
+      DB_HOST: 'localhost'
+      DB_ADMIN: 'libacct'
+      DB_ADMIN_PASS: 'libacct'
+      DB_NAME: 'dspace'
+      DB_PASS: 'dspace'
+      DB_EXPORT: '/vagrant/downloads/shareokprod-20150922-dump.sql'
+  sudo: yes
+  environment: dspace_env
+  tasks:
+#  - name: Ensure PostgreSQL Repository is installed.
+#    sudo: yes
+#    yum: name=http://yum.postgresql.org/9.4/redhat/rhel-6-x86_64/pgdg-redhat94-9.4-1.noarch.rpm state=installed
+#  - name: Ensure PostgreSQL client is installed.
+#    sudo: yes
+#    yum: name={{ item }} state=latest
+#    with_items:
+#    - postgresql94
+#    - postgresql94-jdbc
+  - include: visudo.yml
+  - include: ec2-persistent-hostname.yml
+    vars:
+      ec2_tag_Name: "{{ ec2_tag_Name }}"
+  - include: shareok.yml

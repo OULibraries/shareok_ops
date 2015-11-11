@@ -1,0 +1,11 @@
+---
+  - name: Copy sudoers file for safety
+    command: cp -f /etc/sudoers /etc/sudoers.tmp
+  - name: Create sudoers file backup
+    command: cp -f /etc/sudoers /etc/sudoers.bak
+  - name: Give vagrant user passwordless sudo
+    lineinfile: "dest=/etc/sudoers.tmp line='vagrant ALL=(ALL) NOPASSWD: ALL'"
+  - name: Disable requiretty for sudo
+    lineinfile: "dest=/etc/sudoers.tmp state=present regexp='^Defaults    requiretty$' line='#Defaults    requiretty'"
+  - name: Final sudoers file check
+    shell: visudo -q -c -f /etc/sudoers.tmp && cp -f /etc/sudoers.tmp /etc/sudoers

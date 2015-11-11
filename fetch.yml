@@ -1,0 +1,11 @@
+---
+  - name: Sync {{ src }} from production.
+    sudo: no
+    command: rsync -e 'ssh -o StrictHostKeyChecking=no -o ForwardAgent=yes'  -az --ignore-times --omit-dir-times --no-perms {{ server }}:{{ src }} {{ dest }}
+  - name: Chown {{ dest }} to vagrant:wheel
+    shell: chown -R vagrant:wheel {{ dest }}
+  - name: Chmod dirs in {{ dest }} to 770
+    shell: chmod 770 $(find {{ dest }} -type d)
+  - name: Chmod files in {{ src }} to 660
+    shell: chmod 660 $(find {{ dest }} -type f)
+    ignore_errors: True

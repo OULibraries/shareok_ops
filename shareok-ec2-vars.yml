@@ -1,0 +1,7 @@
+ec2_tag_Name: "lib-amz-shareok-5xtest"
+ec2_tag_App: "SHAREOK"
+ec2_tag_Unit: "Repository Services"
+ec2_tag_Workload: "Unprovisioned"
+ec2_instance_type: "t2.medium"
+ec2_volume_size: 64
+dspace_run: '/srv/shareok/dspace'

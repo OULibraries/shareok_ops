@@ -1,0 +1,85 @@
+---
+  - name: Set Oklahoma time.
+    command: timedatectl set-timezone America/Chicago
+  - name: Ensure vagrant user has the /vagrant directory
+    file: path=/vagrant state=directory mode=0770 owner=vagrant group=wheel
+  - name: Ensure vagrant user has the .ssh directory
+    sudo_user: vagrant
+    file: path=/home/vagrant/.ssh state=directory mode=0700 owner=vagrant group=vagrant
+  - name: Add github ssh fingerprints to vagrant ssh known_hosts.
+    shell: >
+      ssh-keyscan github.com | tee -a /home/vagrant/.ssh/known_hosts
+  - name: Ensure correct .ssh/config exists for libacct
+    file: path=/home/libacct/.ssh/config state=touch mode=0700 owner=libacct group=libacct
+  - name: Ensure correct .ssh/config settings for libacct
+    sudo_user: libacct
+    lineinfile:
+      dest: /home/libacct/.ssh/config
+      line: "{{ item.line }}"
+    with_items:
+      - { line: 'host *' }
+      - { line: 'ForwardAgent yes' }
+  - name: Ensure base packages are installed.
+    yum: name={{ item }} state=latest
+    with_items:
+    - deltarpm
+    - epel-release
+    - nload
+    - htop
+    - sysstat
+    - psmisc
+    - iotop
+    - yum-cron
+    - policycoreutils-python
+    - git
+    - wget
+    - curl
+    - tree
+    - emacs-nox
+    - vim
+    - ack
+    - tmux
+    - screen
+  - name: Ensure PostgreSQL Repository is installed.
+    yum: name=http://yum.postgresql.org/9.4/redhat/rhel-6-x86_64/pgdg-redhat94-9.4-1.noarch.rpm state=installed
+  - name: Ensure PostgreSQL client is installed.
+    yum: name={{ item }} state=latest
+    with_items:
+    - postgresql94
+    - postgresql94-jdbc
+  - name: Ensure DSpace dependency packages are installed.
+    yum: name={{ item }} state=latest
+    with_items:
+    - java-1.8.0-openjdk
+    - maven
+    - ant
+    - tomcat
+    - tomcat-webapps
+    - tomcat-admin-webapps
+  - name: git checkout of public dspace_vagrant repo
+    sudo_user: vagrant
+    git: repo=https://github.com/OULibraries/dspace_vagrant.git
+         dest=/vagrant force=yes
+  - name: Ensure vagrant user has the /vagrant/downloads directory
+    file: path=/vagrant/downloads state=directory mode=0770 owner=vagrant group=wheel
+  - name: Ensure scripts are executable.
+    file: path=/vagrant/scripts state=directory mode=0775 recurse=yes
+  - name: Ensure symlink to shareok-specific config script exists.
+    file: src=/vagrant/etc/shareok.conf.sh dest=/vagrant/etc/conf.sh state=link force=yes
+## We need to sort out our keys situation for this repo, for now we'll sync files from production
+#  - name: Ensure vagrant user has the /vagrant/shareok_dspace directory
+#    file: path=/vagrant/shareok_dspace state=directory mode=0770 owner=vagrant group=wheel
+#  - name: git checkout of private repo
+#    sudo_user: vagrant
+#    git: repo=https://github.com/OULibraries/shareok_dspace.git
+#         dest=/vagrant/shareok_dspace force=yes
+  - name: Ensure symlink to shareok-specific Catalina exists.
+    file: src=/vagrant/etc/Catalina/shareok dest=/vagrant/etc/Catalina/localhost state=link force=yes
+  - name: Make the dspace web app location
+    file: path="{{ dspace_run }}" state=directory mode=0755 owner=tomcat group=tomcat
+  - name: Point tomcat at the dspace web app location
+    command: 'cp -r /vagrant/etc/Catalina/localhost/ /usr/share/tomcat/conf/Catalina/localhost/'
+  - name: Ensure the webapp belongs to tomcat
+    file: path="{{ dspace_run }}" state=directory mode=0755 owner=tomcat group=tomcat recurse=yes
+  - name: Ensure Tomcat is started.
+    service: name=tomcat state=started enabled=yes
