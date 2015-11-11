@@ -1,0 +1,6 @@
+<?xml version='1.0'?>
+<Context
+    path="/"
+    docBase="/srv/shareok/dspace/webapps/xmlui"
+    reloadable="true"
+    cachingAllowed="false"/>
