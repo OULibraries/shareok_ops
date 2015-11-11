@@ -56,8 +56,8 @@
     command: /vagrant/scripts/dspace-db-vagrant.sh
   - name: Create DSpace Database
     command: /vagrant/scripts/dspace-db.sh
-  - name: setup netrc stuff for atmire checkout and kludge around bad atmire perms
-    command: /vagrant/scripts/shareok-3x.sh
+# - name: setup netrc stuff for atmire checkout and kludge around bad atmire perms
+#   command: /vagrant/scripts/shareok-3x.sh
 # Interaction with GitHub needs to be done as vagrant user because
 # ssh agent forwarding works if we do it that way    
   - name: git checkout
