@@ -18,8 +18,8 @@ fi
 #
 # Install to srv as root
 # 
-#cd ${DSPACE_SRC}/dspace/target/dspace-installer
-cd ${DSPACE_SRC}/dspace/target/dspace-*-build
+cd ${DSPACE_SRC}/dspace/target/dspace-installer
+#cd ${DSPACE_SRC}/dspace/target/dspace-*-build
 
 
 
