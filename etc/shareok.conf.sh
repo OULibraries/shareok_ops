@@ -20,4 +20,5 @@ DB_ADMIN_PASS=libacct
 DB_NAME=dspace
 DB_PASS=dspace
 
-DB_EXPORT=/vagrant/downloads/shareokprod-20150922-dump.sql
+#DB_EXPORT=/vagrant/downloads/shareokprod-20150922-dump.sql
+DB_EXPORT=/vagrant/downloads/shareokprod-dump.sql

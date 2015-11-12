@@ -3,6 +3,8 @@
 #
 . /vagrant/etc/conf.sh
 
+
+
 # Remove existing DB and install fresh export
 $DSPACE_RUN/bin/dspace database clean
 psql -U $DB_NAME -h $DB_HOST $DB_NAME < $DB_EXPORT
