@@ -75,6 +75,10 @@
     file: src=/vagrant/etc/shareok.conf.sh dest=/vagrant/etc/conf.sh state=link force=yes
   - name: Ensure symlink to shareok-specific Catalina exists.
     file: src=/vagrant/etc/Catalina/shareok dest=/vagrant/etc/Catalina/localhost state=link force=yes
+  - name: Ensure symlink to shareok-specific tomcat.conf exists.
+    file: src=/vagrant/etc/tomcat.conf dest=/usr/share/tomcat/conf/tomcat.conf state=link force=yes
+  - name: Ensure symlink to shareok-specific server.xml exists.
+    file: src=/vagrant/etc/tomcat-server.xml dest=/usr/share/tomcat/conf/server.xml state=link force=yes
   - name: Make the dspace web app location
     file: path="{{ dspace_run }}" state=directory mode=0755 owner=tomcat group=tomcat
   - name: Point tomcat at the dspace web app location
