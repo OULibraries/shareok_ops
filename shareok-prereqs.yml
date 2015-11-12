@@ -87,14 +87,25 @@
     - tomcat
     - tomcat-webapps
     - tomcat-admin-webapps
+  # Git stuff from GitHub
   - name: Git shareok_ops.
     sudo_user: vagrant
-    git: repo=https://github.com/OULibraries/shareok_ops.git
+    git: repo=git@github.com:OULibraries/shareok_ops.git
          dest=/vagrant force=yes
+  - name: Ensure the existence of /srv/shareok/dspace directory
+    file: path=/srv/shareok/dspace state=directory mode=0770 owner=tomcat group=wheel recurse=yes
+  - name: Git shareok_dspace.
+    sudo_user: vagrant
+    git: repo=git@github.com:OULibraries/shareok_dspace.git
+         dest=/vagrant/shareok_dspace force=yes
+         version=5.x
   - name: Git shareok_handle.
     sudo_user: vagrant
-    git: repo=https://github.com/OULibraries/shareok_handle.git
-         dest=/home/vagrant/handle-server force=yes
+    git: repo=git@github.com:OULibraries/shareok_handle.git
+         dest=/srv/shareok/handle-server force=yes
+  - name: Link the handle-server config to a location inside the dspace folder
+    file: src=/srv/shareok/handle-server dest=/srv/shareok/dspace/handle-server state=link force=yes
+    
   - name: Ensure vagrant user has the /vagrant/downloads directory
     file: path=/vagrant/downloads state=directory mode=0770 owner=vagrant group=wheel
   - name: Ensure scripts are executable.
