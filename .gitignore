@@ -5,3 +5,5 @@ ouatio_dspace
 shareok_dspace
 etc/conf.sh
 etc/Catalina/localhost
+libdev_rsa
+libdev_rsa.pub

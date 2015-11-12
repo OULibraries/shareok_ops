@@ -9,6 +9,17 @@
   - name: Ensure .ssh/known_hosts exists for vagrant
     sudo_user: vagrant
     file: path=/home/vagrant/.ssh/known_hosts state=touch mode=0600 owner=vagrant group=vagrant
+  - name: Ensure .ssh/config exists for vagrant
+    file: path=/home/vagrant/.ssh/config state=touch mode=0700 owner=vagrant group=vagrant
+  - name: Ensure correct .ssh/config settings for vagrant
+    sudo_user: vagrant
+    lineinfile:
+      dest: /home/vagrant/.ssh/config
+      line: "{{ item.line }}"
+    with_items:
+      - { line: 'host github.com' }
+      - { line: 'User git' }
+      - { line: 'IdentityFile ~/.ssh/libdev_rsa' }
   - name: Ensure .ssh/known_hosts exists for libacct
     sudo_user: libacct
     file: path=/home/libacct/.ssh/known_hosts state=touch mode=0600 owner=libacct group=libacct
@@ -77,10 +88,9 @@
     git: repo=https://github.com/OULibraries/shareok_ops.git
          dest=/vagrant force=yes
   - name: Git shareok_handle.
-    #sudo_user: libacct
-    #     dest=/srv/shareok/handle-server force=yes
+    sudo_user: vagrant
     git: repo=https://github.com/OULibraries/shareok_handle.git
-         dest=/home/libacct/handle-server force=yes
+         dest=/srv/shareok/handle-server force=yes
   - name: Ensure vagrant user has the /vagrant/downloads directory
     file: path=/vagrant/downloads state=directory mode=0770 owner=vagrant group=wheel
   - name: Ensure scripts are executable.
