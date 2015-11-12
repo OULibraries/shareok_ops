@@ -87,6 +87,14 @@
     - tomcat
     - tomcat-webapps
     - tomcat-admin-webapps
+  - name: Ensure that nsf client dependencies are installed.
+    yum: name=nfs-utils state=latest
+  - name: Ensure rpcbind is started and enabled.
+    service: name=rpcbind state=started enabled=yes
+#  -name: Ensure fstab entry for asset store
+#   lineinfile: "dest=/etc/fstab state=present line='10.0.0.247:/srv/shareokdata /mnt/shareokdata nfs defaults 0 0'"
+  - name: Mount asset store
+    mount: name=/mnt/shareokdata src='10.0.0.247:/srv/shareokdata' fstype=nfs state=mounted
   # Git stuff from GitHub
   - name: Git shareok_ops.
     sudo_user: vagrant
