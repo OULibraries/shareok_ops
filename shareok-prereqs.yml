@@ -6,17 +6,13 @@
   - name: Ensure vagrant user has the .ssh directory
     sudo_user: vagrant
     file: path=/home/vagrant/.ssh state=directory mode=0700 owner=vagrant group=vagrant
-  - name: Ensure correct .ssh/config exists for vagrant
-    file: path=/home/vagrant/.ssh/config state=touch mode=0700 owner=vagrant group=vagrant
-  - name: Get github ssh fingerprints.
-    command: ssh-keyscan github.com
-    register: git_fingerprints
-  - name: Add fingerprints to vagrant ssh known_hosts.
+  - name: Ensure .ssh/known_hosts exists for vagrant
     sudo_user: vagrant
-    lineinfile:
-      dest: /home/vagrant/.ssh/known_hosts
-      line: "{{ git_fingerprints }}"
-  - name: Ensure correct .ssh/config exists for libacct
+    file: path=/home/vagrant/.ssh/known_hosts state=touch mode=0600 owner=vagrant group=vagrant
+  - name: Ensure .ssh/known_hosts exists for libacct
+    sudo_user: libacct
+    file: path=/home/libacct/.ssh/known_hosts state=touch mode=0600 owner=libacct group=libacct
+  - name: Ensure .ssh/config exists for libacct
     file: path=/home/libacct/.ssh/config state=touch mode=0700 owner=libacct group=libacct
   - name: Ensure correct .ssh/config settings for libacct
     sudo_user: libacct
@@ -26,6 +22,19 @@
     with_items:
       - { line: 'host *' }
       - { line: 'ForwardAgent yes' }
+  - name: Get github ssh fingerprints.
+    command: ssh-keyscan github.com
+    register: git_fingerprints
+  - name: Add fingerprints to vagrant ssh known_hosts.
+    sudo_user: vagrant
+    lineinfile:
+      dest: /home/vagrant/.ssh/known_hosts
+      line: "{{ git_fingerprints.stdout }}"
+  - name: Add fingerprints to libacct ssh known_hosts.
+    sudo_user: libacct
+    lineinfile:
+      dest: /home/libacct/.ssh/known_hosts
+      line: "{{ git_fingerprints.stdout }}"
   - name: Ensure base packages are installed.
     yum: name={{ item }} state=latest
     with_items:
@@ -67,6 +76,11 @@
     sudo_user: vagrant
     git: repo=https://github.com/OULibraries/shareok_ops.git
          dest=/vagrant force=yes
+  - name: Git shareok_handle.
+    #sudo_user: libacct
+    #     dest=/srv/shareok/handle-server force=yes
+    git: repo=https://github.com/OULibraries/shareok_handle.git
+         dest=/home/libacct/handle-server force=yes
   - name: Ensure vagrant user has the /vagrant/downloads directory
     file: path=/vagrant/downloads state=directory mode=0770 owner=vagrant group=wheel
   - name: Ensure scripts are executable.
