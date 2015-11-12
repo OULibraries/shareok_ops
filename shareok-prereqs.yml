@@ -6,9 +6,16 @@
   - name: Ensure vagrant user has the .ssh directory
     sudo_user: vagrant
     file: path=/home/vagrant/.ssh state=directory mode=0700 owner=vagrant group=vagrant
-  - name: Add github ssh fingerprints to vagrant ssh known_hosts.
-    shell: >
-      ssh-keyscan github.com | tee -a /home/vagrant/.ssh/known_hosts
+  - name: Ensure correct .ssh/config exists for vagrant
+    file: path=/home/vagrant/.ssh/config state=touch mode=0700 owner=vagrant group=vagrant
+  - name: Get github ssh fingerprints.
+    command: ssh-keyscan github.com
+    register: git_fingerprints
+  - name: Add fingerprints to vagrant ssh known_hosts.
+    sudo_user: vagrant
+    lineinfile:
+      dest: /home/vagrant/.ssh/known_hosts
+      line: "{{ git_fingerprints }}"
   - name: Ensure correct .ssh/config exists for libacct
     file: path=/home/libacct/.ssh/config state=touch mode=0700 owner=libacct group=libacct
   - name: Ensure correct .ssh/config settings for libacct
@@ -47,7 +54,7 @@
     with_items:
     - postgresql94
     - postgresql94-jdbc
-  - name: Ensure DSpace dependency packages are installed.
+  - name: Ensure other DSpace dependency packages are installed.
     yum: name={{ item }} state=latest
     with_items:
     - java-1.8.0-openjdk
@@ -56,23 +63,16 @@
     - tomcat
     - tomcat-webapps
     - tomcat-admin-webapps
-  - name: git checkout of public dspace_vagrant repo
+  - name: Git shareok_ops.
     sudo_user: vagrant
-    git: repo=https://github.com/OULibraries/dspace_vagrant.git
+    git: repo=https://github.com/OULibraries/shareok_ops.git
          dest=/vagrant force=yes
   - name: Ensure vagrant user has the /vagrant/downloads directory
     file: path=/vagrant/downloads state=directory mode=0770 owner=vagrant group=wheel
   - name: Ensure scripts are executable.
-    file: path=/vagrant/scripts state=directory mode=0775 recurse=yes
+    file: path=/vagrant/bin state=directory mode=0775 recurse=yes
   - name: Ensure symlink to shareok-specific config script exists.
     file: src=/vagrant/etc/shareok.conf.sh dest=/vagrant/etc/conf.sh state=link force=yes
-## We need to sort out our keys situation for this repo, for now we'll sync files from production
-#  - name: Ensure vagrant user has the /vagrant/shareok_dspace directory
-#    file: path=/vagrant/shareok_dspace state=directory mode=0770 owner=vagrant group=wheel
-#  - name: git checkout of private repo
-#    sudo_user: vagrant
-#    git: repo=https://github.com/OULibraries/shareok_dspace.git
-#         dest=/vagrant/shareok_dspace force=yes
   - name: Ensure symlink to shareok-specific Catalina exists.
     file: src=/vagrant/etc/Catalina/shareok dest=/vagrant/etc/Catalina/localhost state=link force=yes
   - name: Make the dspace web app location

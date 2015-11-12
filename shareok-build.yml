@@ -1,0 +1,15 @@
+---
+  - name: Build the dspace install as the vagrant user
+    sudo_user: vagrant
+    command: /vagrant/bin/build.sh chdir="{{ dspace_src }}"
+    register: dspace_build_result
+    ignore_errors: True
+  - name: Fail the play if build exits with a code greater than 1 (Warning)
+    fail: msg="Failed to build DSpace."
+    when: "dspace_build_result.rc > 1"
+  - name: Ensure the webapp belongs to tomcat
+    file: path="{{ dspace_run }}" state=directory mode=0755 owner=tomcat group=tomcat recurse=yes
+  - name: Restart Tomcat.
+    service: name=tomcat state=restarted enabled=yes
+  - name: db cleanup
+    command: /vagrant/scripts/shareok-3x-db.sh

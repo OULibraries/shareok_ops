@@ -2,8 +2,8 @@
 - hosts: localhost
   vars:
     sshcfg: '/etc/ansible/ssh.cfg'
-    server: 'lib.s2.shareok.prod'
-    src: '/srv/migrate/'
+    server: '10.0.0.141'
+    src: '/srv/shareok/export/'
     dest: 'downloads/'
   tasks:
   - include: fetch.yml
@@ -28,6 +28,7 @@
   environment: dspace_env
   tasks:
   - include: visudo.yml
-  - include: shareok.yml
+  - include: shareok-prereqs.yml
+  - include: shareok-build.yml
   - name: Ensure packages that work well with local VMs are installed.
     yum: name=chrony state=latest
