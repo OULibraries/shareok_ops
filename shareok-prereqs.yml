@@ -20,6 +20,10 @@
       - { line: 'host github.com' }
       - { line: 'User git' }
       - { line: 'IdentityFile ~/.ssh/libdev_rsa' }
+  - name: Ensure vagrant user has private machine key
+    copy: src=libdev_rsa dest=/home/vagrant/.ssh/ owner=vagrant group=vagrant mode=0600
+  - name: Ensure vagrant user has public machine key
+    copy: src=libdev_rsa.pub dest=/home/vagrant/.ssh/ owner=vagrant group=vagrant mode=0600
   - name: Ensure .ssh/known_hosts exists for libacct
     sudo_user: libacct
     file: path=/home/libacct/.ssh/known_hosts state=touch mode=0600 owner=libacct group=libacct
@@ -90,7 +94,7 @@
   - name: Git shareok_handle.
     sudo_user: vagrant
     git: repo=https://github.com/OULibraries/shareok_handle.git
-         dest=/srv/shareok/handle-server force=yes
+         dest=/home/vagrant/handle-server force=yes
   - name: Ensure vagrant user has the /vagrant/downloads directory
     file: path=/vagrant/downloads state=directory mode=0770 owner=vagrant group=wheel
   - name: Ensure scripts are executable.
