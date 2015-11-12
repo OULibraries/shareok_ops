@@ -2,8 +2,7 @@
 # Load a copy of the SHAREOK db and then upgrade it 
 #
 . /vagrant/etc/conf.sh
-
-
+export PGPASSWORD=$DB_PASS
 
 # Remove existing DB and install fresh export
 $DSPACE_RUN/bin/dspace database clean
