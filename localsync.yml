@@ -1,0 +1,6 @@
+---
+  - name: Sync {{ src }} to {{ dest }}.
+    sudo: yes
+    command: rsync -a {{ src }} {{ dest }}
+  - name: Chown {{ dest }} to nfsnobody:nfsnobody
+    shell: chown -R nfsnobody:nfsnobody {{ dest }}

@@ -4,6 +4,14 @@
   - include_vars: shareok-ec2-vars.yml
   tasks:
   - include: ec2.yml
+- hosts: 10.0.0.247
+  pre_tasks:
+  - include_vars: shareok-ec2-vars.yml
+  tasks:
+  - include: localsync.yml
+    vars:
+      src: '/srv/shareokdata/assetstore0/'
+      dest: '/srv/shareokdata/5x-assetstore0'
 - hosts: unprovisioned
   pre_tasks:
   - include_vars: shareok-ec2-vars.yml
@@ -12,13 +20,13 @@
   - include: visudo.yml
   - include: ec2-persistent-hostname.yml
   - include: shareok-prereqs.yml
-  - include: fetch.yml
-    vars:
-      server: '10.0.0.141'
-      src: '/srv/shareok/export/'
-      dest: '/vagrant/downloads/'
-  - include: fetch.yml
-    vars:
-      server: '10.0.0.141'
-      src: '/vagrant/shareok_dspace'
-      dest: '/vagrant/'
+#  - include: fetch.yml
+#    vars:
+#      server: '10.0.0.141'
+#      src: '/srv/shareok/export/'
+#      dest: '/vagrant/downloads/'
+#  - include: fetch.yml
+#    vars:
+#      server: '10.0.0.141'
+#      src: '/vagrant/shareok_dspace'
+#      dest: '/vagrant/'

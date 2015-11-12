@@ -34,28 +34,28 @@
   - name: Add github ssh fingerprints to vagrant ssh known_hosts.
     shell: >
       ssh-keyscan github.com | tee -a /home/vagrant/.ssh/known_hosts
-  - name: Ensure PostgreSQL is installed.
-    yum: name=postgresql-server state=installed
-  - name: Run PostgreSQL initialization.
-    command: postgresql-setup initdb
-    register: postgres_setup_result
-    ignore_errors: True
-  - name: Fail the play if PostgreSQL exited with a code greater than 1 (Warning)
-    fail: msg="Failed to initialize PostgreSQL."
-    when: "postgres_setup_result.rc > 1"
-  - name: Ensure PostgreSQL authentication config.
-    copy:
+#  - name: Ensure PostgreSQL is installed.
+#    yum: name=postgresql-server state=installed
+#  - name: Run PostgreSQL initialization.
+#    command: postgresql-setup initdb
+#    register: postgres_setup_result
+#    ignore_errors: True
+#  - name: Fail the play if PostgreSQL exited with a code greater than 1 (Warning)
+#    fail: msg="Failed to initialize PostgreSQL."
+#    when: "postgres_setup_result.rc > 1"
+#  - name: Ensure PostgreSQL authentication config.
+#    copy:
       ## Note that the src is on the host machine.
-      src: "etc/pg_hba.conf"
-      dest: "/var/lib/pgsql/data/pg_hba.conf"
-      owner: postgres
-      group: postgres
-  - name: Ensure PostgreSQL is running.
-    service: name=postgresql state=started enabled=yes
-  - name: Create shared PostgreSQL admin user.
-    command: /vagrant/scripts/dspace-db-vagrant.sh
-  - name: Create DSpace Database
-    command: /vagrant/scripts/dspace-db.sh
+#      src: "etc/pg_hba.conf"
+#      dest: "/var/lib/pgsql/data/pg_hba.conf"
+#      owner: postgres
+#      group: postgres
+#  - name: Ensure PostgreSQL is running.
+#    service: name=postgresql state=started enabled=yes
+#  - name: Create shared PostgreSQL admin user.
+#    command: /vagrant/scripts/dspace-db-vagrant.sh
+#  - name: Create DSpace Database
+#    command: /vagrant/scripts/dspace-db.sh
 # - name: setup netrc stuff for atmire checkout and kludge around bad atmire perms
 #   command: /vagrant/scripts/shareok-3x.sh
 # Interaction with GitHub needs to be done as vagrant user because

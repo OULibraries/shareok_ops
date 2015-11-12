@@ -36,15 +36,15 @@
   sudo: yes
   environment: dspace_env
   tasks:
-#  - name: Ensure PostgreSQL Repository is installed.
-#    sudo: yes
-#    yum: name=http://yum.postgresql.org/9.4/redhat/rhel-6-x86_64/pgdg-redhat94-9.4-1.noarch.rpm state=installed
-#  - name: Ensure PostgreSQL client is installed.
-#    sudo: yes
-#    yum: name={{ item }} state=latest
-#    with_items:
-#    - postgresql94
-#    - postgresql94-jdbc
+  - name: Ensure PostgreSQL Repository is installed.
+    sudo: yes
+    yum: name=http://yum.postgresql.org/9.4/redhat/rhel-6-x86_64/pgdg-redhat94-9.4-1.noarch.rpm state=installed
+  - name: Ensure PostgreSQL client is installed.
+    sudo: yes
+    yum: name={{ item }} state=latest
+    with_items:
+    - postgresql94
+    - postgresql94-jdbc
   - include: visudo.yml
   - include: ec2-persistent-hostname.yml
     vars:

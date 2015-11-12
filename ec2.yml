@@ -12,12 +12,13 @@
         Unit: "{{ec2_tag_Unit}}"
         Workload: "{{ec2_tag_Workload}}"
         App: "{{ec2_tag_App}}"
-      exact_count: 1
+      exact_count: "{{ec2_exact_count}}"
       count_tag:
-        App: ShareOK
-        Workload: Unprovisioned
+        App: "{{ec2_tag_App}}"
+        Workload: "{{ec2_tag_Workload}}"
       vpc_subnet_id: subnet-e09a5b97
       assign_public_ip: yes
+      private_ip: "{{ec2_private_ip}}"
       region: us-east-1
       volumes:
       - device_name: /dev/sda1
@@ -28,8 +29,8 @@
   - name: Add new instance to host group
     add_host: hostname={{ item.private_ip }} groupname=unprovisioned
     with_items: ec2.instances
-#  - name: Wait for SSH to come up
-#    wait_for: host={{ item.private_ip }} port=22 delay=60 timeout=360 state=started
-#    with_items: ec2.instances
-  - name: Wait for 3 minutes
-    wait_for: timeout=180
+  - name: Wait for SSH to come up
+    wait_for: host={{ item.private_ip }} port=22 delay=60 timeout=360 state=started
+    with_items: ec2.instances
+#  - name: Wait for 3 minutes
+#    wait_for: timeout=180

@@ -10,7 +10,7 @@ export ANT_OPTS="-Xms128m -Xmx800m"
 DSPACE_GIT="https://atmire.com/git/clients/oklahoma"
 DSPACE_SRC=/vagrant/shareok_dspace
 DSPACE_RUN=/srv/shareok/dspace
-
+DSPACE_BACKUP=/var/local/backups/dspace
 
 # DSpace Database Configuration
 DB_HOST=localhost
