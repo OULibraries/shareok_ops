@@ -112,6 +112,8 @@
     git: repo=git@github.com:OULibraries/shareok_handle.git
          dest=/srv/shareok/handle-server force=yes
   # Filesystem stuff.
+  - name: Ensure the handle server belongs to tomcat
+    file: path=/srv/shareok/handle-server state=directory mode=0755 owner=tomcat group=tomcat recurse=yes
   - name: Link the handle-server config to a location inside the dspace folder
     file: src=/srv/shareok/handle-server dest=/srv/shareok/dspace/handle-server state=link force=yes
   - name: Ensure /usr/local belongs to root:wheel 0775
