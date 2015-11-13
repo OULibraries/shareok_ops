@@ -9,3 +9,5 @@
     shell: mv -f /etc/cloud/cloud.cfg.tmp /etc/cloud/cloud.cfg
   - name: Set hostname to instance name
     shell: hostnamectl set-hostname "{{ ec2_tag_Name }}"
+  - name: Also set /etc/hosts for legacy change
+    lineinfile: "{{ ec2_private_ip }}" "{{ ec2_tag_Name }}"
