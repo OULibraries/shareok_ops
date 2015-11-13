@@ -10,4 +10,4 @@
   - name: Set hostname to instance name
     shell: hostnamectl set-hostname "{{ ec2_tag_Name }}"
   - name: Also set /etc/hosts for legacy change
-    lineinfile: "dest=/etc/hosts line=""{{ ec2_private_ip }}" "{{ ec2_tag_Name }}""
+    lineinfile: "dest=/etc/hosts line=""{{ ec2_private_ip }}" "{{ ec2_tag_Name }}"""
