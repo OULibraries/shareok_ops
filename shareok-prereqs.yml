@@ -98,8 +98,6 @@
     yum: name=nfs-utils state=latest
   - name: Ensure rpcbind is started and enabled.
     service: name=rpcbind state=started enabled=yes
-#  -name: Ensure fstab entry for asset store
-#   lineinfile: "dest=/etc/fstab state=present line='10.0.0.247:/srv/shareokdata /mnt/shareokdata nfs defaults 0 0'"
   - name: Mount asset store
     mount: name=/mnt/shareokdata src='10.0.0.247:/srv/shareokdata' fstype=nfs state=mounted
   # Git stuff from GitHub
@@ -118,6 +116,10 @@
     sudo_user: vagrant
     git: repo=git@github.com:OULibraries/shareok_handle.git
          dest=/srv/shareok/handle-server force=yes
+  - name: Git oulib-ec2-conf.
+    sudo_user: vagrant
+    git: repo=git@github.com:OULibraries/oulib-ec2-conf.git
+         dest=/opt/oulib-ec2 force=yes
   # Filesystem stuff.
   - name: Ensure the handle server belongs to tomcat
     file: path=/srv/shareok/handle-server state=directory mode=0755 owner=tomcat group=tomcat recurse=yes
