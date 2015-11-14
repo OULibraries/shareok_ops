@@ -1,6 +1,13 @@
 ---
-  - name: Set Oklahoma time.
-    command: timedatectl set-timezone America/Chicago
+  - name: Check Timezone
+    shell: >
+      timedatectl status | grep Timezone: | cut -d ':' -f 2 | cut -d '(' -f 1 | xargs
+    always_run: yes
+    register: timezone
+    changed_when: timezone.stdout != "{{ server_timezone }}"
+    when: timezone.stdout != "{{ server_timezone }}"
+    notify:
+    - Set timezone
   - name: Ensure vagrant user has the /vagrant directory
     file: path=/vagrant state=directory mode=0775 owner=vagrant group=wheel
   - name: Ensure vagrant user has the .ssh directory

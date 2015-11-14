@@ -6,4 +6,5 @@ ec2_instance_type: "t2.large"
 ec2_volume_size: 64
 ec2_private_ip: '10.0.0.253'
 ec2_exact_count: '1'
+server_timezone: 'America/Chicago'
 dspace_run: '/srv/shareok/dspace'

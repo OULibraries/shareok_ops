@@ -20,13 +20,7 @@
   - include: visudo.yml
   - include: ec2-persistent-hostname.yml
   - include: shareok-prereqs.yml
-#  - include: fetch.yml
-#    vars:
-#      server: '10.0.0.141'
-#      src: '/srv/shareok/export/'
-#      dest: '/vagrant/downloads/'
-#  - include: fetch.yml
-#    vars:
-#      server: '10.0.0.141'
-#      src: '/vagrant/shareok_dspace'
-#      dest: '/vagrant/'
+  sudo: yes
+  handlers:
+  - name: Set timezone
+    command: timedatectl set-timezone "{{ server_timezone }}"

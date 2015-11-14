@@ -1,5 +1,6 @@
 ---
   - name: Launch instance
+    always_run: yes
     ec2:
       key_name: jsherman-2015-03-02
       instance_type: "{{ec2_instance_type}}"
