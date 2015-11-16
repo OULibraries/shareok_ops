@@ -4,7 +4,7 @@
     ec2:
       key_name: jsherman-2015-03-02
       instance_type: "{{ec2_instance_type}}"
-      image: ami-96a818fe
+      image: ami-8f0f4dea
       instance_profile_name: lib-amz-default
       wait: yes
       group: ['Outbound Open', 'Inbound ssh lib-amz-broker', 'temp-allow-shareok-ssh', 'handle-service', 'Inbount tomcat from lb']
