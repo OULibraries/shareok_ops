@@ -1,0 +1,13 @@
+---
+  - name: Persistent hostname allowed in cloud config file
+    lineinfile: "dest=/etc/cloud/cloud.cfg line='preserve_hostname: true'"
+  - name: Set hostname to instance name
+    shell: hostnamectl set-hostname "{{ ec2_tag_Name }}"
+  - name: Also set /etc/hosts for legacy
+    lineinfile: dest=/etc/hosts line="{{ ec2_private_ip }} {{ ec2_tag_Name }}"
+  - name: Verify latest aws-cli is installed
+    pip: name=awscli state=latest
+  - name: Git oulib-ec2-conf.
+    sudo_user: vagrant
+    git: repo=git@github.com:OULibraries/oulib-ec2-conf.git
+         dest=/opt/oulib-ec2 force=yes

@@ -3,24 +3,25 @@
   pre_tasks:
   - include_vars: shareok-ec2-vars.yml
   tasks:
-  - include: ec2.yml
-- hosts: 10.0.0.247
-  pre_tasks:
-  - include_vars: shareok-ec2-vars.yml
-  tasks:
-  - include: localsync.yml
-    vars:
-      src: '/srv/shareokdata/assetstore0/'
-      dest: '/srv/shareokdata/5x-assetstore0'
+  - include: ec2-init-tasks.yml
+  handlers:
+  - include: ec2-init-handlers.yml
+#- hosts: 10.0.0.247
+#  pre_tasks:
+#  - include_vars: shareok-ec2-vars.yml
+#  tasks:
+#  - include: localsync.yml
+#    vars:
+#      src: '/srv/shareokdata/assetstore0/'
+#      dest: '/srv/shareokdata/5x-assetstore0'
 - hosts: unprovisioned
   pre_tasks:
   - include_vars: shareok-ec2-vars.yml
   sudo: yes
   tasks:
-  - include: visudo.yml
-  - include: ec2-persistent-hostname.yml
+  - include: base-server-tasks.yml
+  - include: ec2-server-tasks.yml
   - include: shareok-prereqs.yml
   sudo: yes
   handlers:
-  - name: Set timezone
-    command: timedatectl set-timezone "{{ server_timezone }}"
+  - include: base-server-handlers.yml

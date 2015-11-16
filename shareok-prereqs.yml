@@ -1,83 +1,4 @@
 ---
-  - name: Check Timezone
-    shell: >
-      timedatectl status | grep Timezone: | cut -d ':' -f 2 | cut -d '(' -f 1 | xargs
-    always_run: yes
-    register: timezone
-    changed_when: timezone.stdout != "{{ server_timezone }}"
-    when: timezone.stdout != "{{ server_timezone }}"
-    notify:
-    - Set timezone
-  - name: Ensure vagrant user has the /vagrant directory
-    file: path=/vagrant state=directory mode=0775 owner=vagrant group=wheel
-  - name: Ensure vagrant user has the .ssh directory
-    sudo_user: vagrant
-    file: path=/home/vagrant/.ssh state=directory mode=0700 owner=vagrant group=vagrant
-  - name: Ensure .ssh/known_hosts exists for vagrant
-    sudo_user: vagrant
-    file: path=/home/vagrant/.ssh/known_hosts state=touch mode=0600 owner=vagrant group=vagrant
-  - name: Ensure .ssh/config exists for vagrant
-    file: path=/home/vagrant/.ssh/config state=touch mode=0700 owner=vagrant group=vagrant
-  - name: Ensure correct .ssh/config settings for vagrant
-    sudo_user: vagrant
-    lineinfile:
-      dest: /home/vagrant/.ssh/config
-      line: "{{ item.line }}"
-    with_items:
-      - { line: 'host github.com' }
-      - { line: 'User git' }
-      - { line: 'IdentityFile ~/.ssh/libdev_rsa' }
-  - name: Ensure vagrant user has private machine key
-    copy: src=libdev_rsa dest=/home/vagrant/.ssh/ owner=vagrant group=vagrant mode=0600
-  - name: Ensure vagrant user has public machine key
-    copy: src=libdev_rsa.pub dest=/home/vagrant/.ssh/ owner=vagrant group=vagrant mode=0600
-  - name: Ensure .ssh/known_hosts exists for libacct
-    sudo_user: libacct
-    file: path=/home/libacct/.ssh/known_hosts state=touch mode=0600 owner=libacct group=libacct
-  - name: Ensure .ssh/config exists for libacct
-    file: path=/home/libacct/.ssh/config state=touch mode=0700 owner=libacct group=libacct
-  - name: Ensure correct .ssh/config settings for libacct
-    sudo_user: libacct
-    lineinfile:
-      dest: /home/libacct/.ssh/config
-      line: "{{ item.line }}"
-    with_items:
-      - { line: 'host *' }
-      - { line: 'ForwardAgent yes' }
-  - name: Get github ssh fingerprints.
-    command: ssh-keyscan github.com
-    register: git_fingerprints
-  - name: Add fingerprints to vagrant ssh known_hosts.
-    sudo_user: vagrant
-    lineinfile:
-      dest: /home/vagrant/.ssh/known_hosts
-      line: "{{ git_fingerprints.stdout }}"
-  - name: Add fingerprints to libacct ssh known_hosts.
-    sudo_user: libacct
-    lineinfile:
-      dest: /home/libacct/.ssh/known_hosts
-      line: "{{ git_fingerprints.stdout }}"
-  - name: Ensure base packages are installed.
-    yum: name={{ item }} state=latest
-    with_items:
-    - deltarpm
-    - epel-release
-    - nload
-    - htop
-    - sysstat
-    - psmisc
-    - iotop
-    - yum-cron
-    - policycoreutils-python
-    - git
-    - wget
-    - curl
-    - tree
-    - emacs-nox
-    - vim
-    - ack
-    - tmux
-    - screen
   - name: Ensure PostgreSQL Repository is installed.
     yum: name=http://yum.postgresql.org/9.4/redhat/rhel-6-x86_64/pgdg-redhat94-9.4-1.noarch.rpm state=installed
   - name: Ensure PostgreSQL client is installed.
@@ -98,8 +19,8 @@
     yum: name=nfs-utils state=latest
   - name: Ensure rpcbind is started and enabled.
     service: name=rpcbind state=started enabled=yes
-  - name: Mount asset store
-    mount: name=/mnt/shareokdata src='10.0.0.247:/srv/shareokdata' fstype=nfs state=mounted
+#  - name: Mount asset store
+#    mount: name=/mnt/shareokdata src='10.0.0.247:/srv/shareokdata' fstype=nfs state=mounted
   # Git stuff from GitHub
   - name: Git shareok_ops.
     sudo_user: vagrant
@@ -125,8 +46,6 @@
     file: path=/srv/shareok/handle-server state=directory mode=0755 owner=tomcat group=tomcat recurse=yes
   - name: Link the handle-server config to a location inside the dspace folder
     file: src=/srv/shareok/handle-server dest=/srv/shareok/dspace/handle-server state=link force=yes
-  - name: Ensure /usr/local belongs to root:wheel 0775
-    file: path=/usr/local state=directory mode=0775 owner=root group=wheel recurse=yes
   - name: Ensure vagrant user has the /vagrant/downloads directory
     file: path=/vagrant/downloads state=directory mode=0770 owner=vagrant group=wheel
   - name: Ensure scripts are executable.

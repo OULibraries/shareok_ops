@@ -1,0 +1,7 @@
+---
+- name: Add instance to host group
+  add_host: hostname={{ item.private_ip }} groupname=unprovisioned
+  with_items: ec2.instances
+  notify: Wait 3 minutes
+- name: Wait 3 minutes
+  wait_for: timeout=180
