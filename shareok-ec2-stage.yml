@@ -15,7 +15,7 @@
   - shareok-ec2-vars.yml
   vars_prompt:
   - name: lmc_pass
-    prompt: "Enter password for user lmc"
+    prompt: "Enter password for lmc"
     private: yes
     encrypt: "sha512_crypt"
     confirm: yes
@@ -24,7 +24,13 @@
   tasks:
   - include: base-server-tasks.yml
   - include: ec2-server-tasks.yml
-  - include: user-lmc-tasks.yml
+  - include: user-config-tasks.yml
+    vars:
+      user_name: lmc
+      user_pass: "{{ lmc_pass }}"
+      is_temp_user_pass: True
+      user_groups: 'wheel'
+      user_pubkey: '"ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCyJfXJL9D83YTb0nXkgR4WY99s5qDUPN9q9XkudkQ40KDUvu1bt6O3JYoYhJbARh1n5fXTU6SN5AZKF9kp/bAl3HFweGAQaTI8UxugOup+viY1MyX8oUUTcoCI0oG0vw61jnXApVun0f+lLDnXUJycKq04XP4mN3ia5G/CgNUYsdc2g3es1LhaFZOi/gqgNThhKvopPTY3t+nHRQj2GzWTWhUc88glBXxHVqYqVRGm04ZDH1PfLseIZda2HRAlJulXsN41yShB/NJaSAkV6HwycCk+TyDHRtVyTeE02lo4S664XF9FHERA2HPgvF+K/lH+65c/+XQAK++RDcILZjP9 lmc@ou.edu - digibroker"'
   - include: shareok-prereqs.yml
   sudo: yes
   handlers:

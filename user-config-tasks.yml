@@ -1,0 +1,14 @@
+---
+- name: Add user {{ user_name }}
+  user: name={{ user_name }} shell=/bin/bash password={{ user_pass }} groups={{ user_groups }} append=yes update_password=always
+- name: Ensure {{ user_name }} has the .ssh directory
+  sudo_user: "{{ user_name }}"
+  file: path=/home/{{user_name }}/.ssh state=directory mode=0700 owner={{ user_name }} group={{ user_name }}
+- name: Ensure lmc has the .ssh/authorized_keys file
+  sudo_user: "{{ user_name }}"
+  file: path=/home/{{ user_name }}/.ssh/authorized_keys state=file mode=0600 owner={{ user_name }} group={{ user_name }}
+- name: Add ssh pubkey for {{ user_name }}
+  lineinfile: "dest=/home/{{ user_name }}/.ssh/authorized_keys line={{ user_pubkey }}"
+- name: Force password change on next login
+  command: chage -d 0 {{ user_name }}
+  when: (is_temp_user_pass is defined) and is_temp_user_pass
