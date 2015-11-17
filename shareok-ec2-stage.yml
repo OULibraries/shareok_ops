@@ -14,16 +14,42 @@
   vars_files:
   - shareok-ec2-vars.yml
   vars_prompt:
+  - name: jsherman_pass
+    prompt: "password for jsherman"
+    private: yes
+    encrypt: "sha512_crypt"
+    confirm: yes
+    salt_size: 7
   - name: lmc_pass
-    prompt: "Enter password for lmc"
+    prompt: "password for lmc"
+    private: yes
+    encrypt: "sha512_crypt"
+    confirm: yes
+    salt_size: 7
+  - name: sfortney_pass
+    prompt: "password for sfortney"
+    private: yes
+    encrypt: "sha512_crypt"
+    confirm: yes
+    salt_size: 7
+  - name: zhongda_pass
+    prompt: "password for zhongda"
     private: yes
     encrypt: "sha512_crypt"
     confirm: yes
     salt_size: 7
   sudo: yes
+  sudo: yes
   tasks:
   - include: base-server-tasks.yml
   - include: ec2-server-tasks.yml
+  - include: user-config-tasks.yml
+    vars:
+      user_name: jsherman
+      user_pass: "{{ jsherman_pass }}"
+      is_temp_user_pass: True
+      user_groups: 'wheel'
+      user_pubkey: '"ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEAyTS2Qh31uMHfRn14YHymO9rEGjUFkx+Q0LNMBs+u1ICgA0CImC47okaB6Pr5TKSDq2Cmop3Xr4zfOBejfeFTNNgcKYbH7HRdVBDKER8RshYF/dF/0pMVmi7ZJJRXXItUmusySytg3wzfn3pR9bRHXjOUhTTR+YNdIQ2ORHiws6HTAKXu3Fjsw3OXLl+1Z3uvpGyvfS2XOhuYM5J3BndI6SCj8M+QgYpE+sUd6m362NU6I2lwQJjf9tXsVmyB23Ff1YUGviHm9eVCnNRU4oPd0Np45G/VBWOJCJZgP6isxqE3n7Rw2JkIsdytaG96MMb5UfZztYt9rzWXxRNPfrEGnw== jsherman@ou.edu"'
   - include: user-config-tasks.yml
     vars:
       user_name: lmc
@@ -31,6 +57,20 @@
       is_temp_user_pass: True
       user_groups: 'wheel'
       user_pubkey: '"ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCyJfXJL9D83YTb0nXkgR4WY99s5qDUPN9q9XkudkQ40KDUvu1bt6O3JYoYhJbARh1n5fXTU6SN5AZKF9kp/bAl3HFweGAQaTI8UxugOup+viY1MyX8oUUTcoCI0oG0vw61jnXApVun0f+lLDnXUJycKq04XP4mN3ia5G/CgNUYsdc2g3es1LhaFZOi/gqgNThhKvopPTY3t+nHRQj2GzWTWhUc88glBXxHVqYqVRGm04ZDH1PfLseIZda2HRAlJulXsN41yShB/NJaSAkV6HwycCk+TyDHRtVyTeE02lo4S664XF9FHERA2HPgvF+K/lH+65c/+XQAK++RDcILZjP9 lmc@ou.edu - digibroker"'
+  - include: user-config-tasks.yml
+    vars:
+      user_name: sfortney
+      user_pass: "{{ sfortney_pass }}"
+      is_temp_user_pass: True
+      user_groups: 'wheel'
+      user_pubkey: '"ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCjrPd3jjrtirqtxQ7TIrelGWZjPn4E9J7q32ogG6WusyzeW1X0kMqIEGDyXKfpL5WlCody/TOLIIB9jxje6Xj0i59JenUppmNt70AeLgS5NI64FQB9+jkDAmuh+pjYZ/xBB4VIMLgEq0UXqlZwN2YXjJG+X6o1LOew0awGKnH4DIqepvsaKV4eCVkAyNE95Co0v2ZL35LzFmgauH8L0CBUVvQXNyosX2o67foQwCuqi07QLaAKBWIphuqTXgd+eyAsHeoV5UECtAaRibB+ESfVZ9UJ6MdFSP0ef77QYiYr89pjXPml+hJFZH3+xX4f87NSFf2yvvbH4I/htoSRy9PJ sean.fortney@okstate.edu"'
+  - include: user-config-tasks.yml
+    vars:
+      user_name: zhongda
+      user_pass: "{{ zhongda_pass }}"
+      is_temp_user_pass: True
+      user_groups: 'wheel'
+      user_pubkey: '"ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQCpRUDzMxo62m+NNCn29P3JSW7uF3+Q9w5QsuN4U/Dl980CWMsc3Glr5MhGfCDdgZ//Rrq0fT3AMq/LXx0b+McNTyTBPRshVjgef6yrQR37uWQn43Y9/pLVjNWcSy07k5ZzsdeSTGuyNZCmr0amuV8VRB8cMWVrmNg+IV9amPKjwnH6v6bQLNJlxpGbKtJ5U9nAPw0MeRqsAo6ptqpkYd6uhOEQx02y9yILyp45hP7vINfCJgF6srYM2pNSxZPZxEZDeJUn2YPD7sPH5y+Kx1tzkujyMtP0xZ3HkQDzdC8S9vcKy1D83f2szGrHTC7CQRXb7IQk4XwjOb5AVWnUw9mbaThmHz9dFzGf9xeFMVdToV/KqoPwns8uWCXzoTQa+7xVnR2EZ5B8sFBR0k8wYPaHiEFXktfA3tJSStt31GIqtxRasC+x+6DNV3pDc8GVjjqO9VmJadRV29Cci3pVbGKR8366OroKgyvEctLNgZvNFyq+/qExPf8+RXMN27TGhJBlWuoPpfuS9tTfOz/WRWKPPJHSPvq606/1djGPjDPldvI6zq9K0LqbD2ha16f/hOvtHNCfOoTxku/Qn6gIoqMpLG0SiLH8mXU8TADJaW/oQJwMQuzvBjAldye5zk1wFZz2FaAXuH9F+zdZ5OdyRl4bBJrwk5p9Cpo0HFbtBzBD6Q== zhongda@ou.edu"'
   - include: shareok-prereqs.yml
   sudo: yes
   handlers:
