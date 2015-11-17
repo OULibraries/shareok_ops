@@ -1,5 +1,4 @@
 ---
-  # "Name": "CentOS 7 x86_64 (2014_09_29) EBS HVM-b7ee8a69-ee97-4a49-9e68-afaee216db2e-ami-d2a117ba.2",
   - name: Launch instance
     ec2:
       key_name: jsherman-2015-03-02
@@ -26,5 +25,11 @@
         device_type: gp2
         volume_size: "{{ ec2_volume_size }}"
         delete_on_termination: true
-    notify: Add instance to host group
     register: ec2
+  - name: Wait 3 minutes
+    wait_for: timeout=180
+    when: ec2.changed == True
+  - name: Add instance to host group
+    add_host: hostname={{ item.private_ip }} groupname=unprovisioned
+    with_items: ec2.instances
+    when: ec2.changed == True

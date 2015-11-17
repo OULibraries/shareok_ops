@@ -5,7 +5,6 @@
     always_run: yes
     register: timezone
     changed_when: timezone.stdout != "{{ server_timezone }}"
-    #when: timezone.stdout != "{{ server_timezone }}"
     notify:
     - Set timezone
   - name: Give vagrant user passwordless sudo
