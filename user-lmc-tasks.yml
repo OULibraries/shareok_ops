@@ -1,0 +1,11 @@
+---
+- name: Add user lmc
+  user: name=lmc shell=/bin/bash password={{ lmc_pass }} groups=wheel append=yes update_password=always
+- name: Ensure lmc has the .ssh directory
+  sudo_user: lmc
+  file: path=/home/lmc/.ssh state=directory mode=0700 owner=lmc group=lmc
+- name: Ensure lmc has the .ssh/authorized_keys file
+  sudo_user: lmc
+  file: path=/home/lmc/.ssh/authorized_keys state=file mode=0600 owner=lmc group=lmc
+- name: Add ssh pubkey for lmc
+  lineinfile: "dest=/home/lmc/.ssh/authorized_keys line='ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCyJfXJL9D83YTb0nXkgR4WY99s5qDUPN9q9XkudkQ40KDUvu1bt6O3JYoYhJbARh1n5fXTU6SN5AZKF9kp/bAl3HFweGAQaTI8UxugOup+viY1MyX8oUUTcoCI0oG0vw61jnXApVun0f+lLDnXUJycKq04XP4mN3ia5G/CgNUYsdc2g3es1LhaFZOi/gqgNThhKvopPTY3t+nHRQj2GzWTWhUc88glBXxHVqYqVRGm04ZDH1PfLseIZda2HRAlJulXsN41yShB/NJaSAkV6HwycCk+TyDHRtVyTeE02lo4S664XF9FHERA2HPgvF+K/lH+65c/+XQAK++RDcILZjP9 lmc@ou.edu - digibroker'"

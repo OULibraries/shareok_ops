@@ -13,10 +13,18 @@
 - hosts: unprovisioned
   vars_files:
   - shareok-ec2-vars.yml
+  vars_prompt:
+  - name: lmc_pass
+    prompt: "Enter password for user lmc"
+    private: yes
+    encrypt: "sha512_crypt"
+    confirm: yes
+    salt_size: 7
   sudo: yes
   tasks:
   - include: base-server-tasks.yml
   - include: ec2-server-tasks.yml
+  - include: user-lmc-tasks.yml
   - include: shareok-prereqs.yml
   sudo: yes
   handlers:
