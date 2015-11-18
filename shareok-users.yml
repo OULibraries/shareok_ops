@@ -25,6 +25,12 @@
     encrypt: "sha512_crypt"
     confirm: yes
     salt_size: 7
+  - name: jhenderson_pass
+    prompt: "password for jhenderson"
+    private: yes
+    encrypt: "sha512_crypt"
+    confirm: yes
+    salt_size: 7
   sudo: yes
   tasks:
   - include: user-config-tasks.yml
