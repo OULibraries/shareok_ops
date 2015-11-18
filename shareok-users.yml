@@ -1,4 +1,12 @@
 ---
+- hosts: Host broker.amz.prod
+  - include: user-config-tasks.yml
+    vars:
+      user_name: jhenderson
+      user_pass: jhenderson
+      is_temp_user_pass: True
+      user_groups: ''
+      user_pubkey: '""'
 - hosts: app.shareok
   vars_prompt:
   - name: jsherman_pass
@@ -25,7 +33,6 @@
     encrypt: "sha512_crypt"
     confirm: yes
     salt_size: 7
-  sudo: yes
   sudo: yes
   tasks:
   - include: user-config-tasks.yml
