@@ -1,12 +1,4 @@
 ---
-- hosts: Host broker.amz.prod
-  - include: user-config-tasks.yml
-    vars:
-      user_name: jhenderson
-      user_pass: jhenderson
-      is_temp_user_pass: True
-      user_groups: ''
-      user_pubkey: '""'
 - hosts: app.shareok
   vars_prompt:
   - name: jsherman_pass
@@ -69,5 +61,4 @@
       user_pass: "{{ jhenderson_pass }}"
       is_temp_user_pass: True
       user_groups: 'wheel'
-      user_pubkey: '"ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDB3qlLkmyvsagWu2XtEKlQwD8Nhe9MjpdNozRCO+bxbL5aSzukgt5E+uV4CrRF2NbiQp6v+SUJlIFcCNN/ZJnlmzbMAWoglN36WBBaBM3WyE2Fjml/XJx8Scq7tFNNLX5Q5UDo8z1csekDNKq9A+q3d1WW/x07T+7sJnB+HUizKG7FLgrGAfo/6OqiseO9lGuMkL1Pr1qHB5eH4B8yqE2di3BUWfq5S6J9yz5dZmpimTCnjikcMoExm80Z/xVgb5nFczKUXHa7d6pVxOUd9q+bYULzabb4sGxwKHRx3adJEoBWXOWWxgurWjSMwn1d6V+sOAclKoVYQexMMumEz9qXHDdrsg1s06QMwlgjoTnPwWavNDq88PaQVfsbaDldFy1266ugeSpRC7+6tWmtxtcNSMzvqaj0r9K8YRAeAglk0Zge0F5d/pqP39uRP2iTjbm7+or1jBpldxWQ/vdI4hlr3UeR5LezxVVynZo1/twLidpN8MIgq6i1gpA4zCUpMcvL/QlReTBez2E/3nSDOC1u30J1kobIjcn0tgWGzoLepC48Te81kVd7ZBcOjf+rBySDelzfroBeO2ZzRpzgNHEDIgYgjmODA/XqS6jRNyZgld7mLtBStH9swTaSNBY/83M+fkO+JOGaAOwYtHxXsMKwagt9sENtM1XZIe95GGRF9w== jason.dean.henderson@okstate.edu
-"'
+      user_pubkey: '"ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDB3qlLkmyvsagWu2XtEKlQwD8Nhe9MjpdNozRCO+bxbL5aSzukgt5E+uV4CrRF2NbiQp6v+SUJlIFcCNN/ZJnlmzbMAWoglN36WBBaBM3WyE2Fjml/XJx8Scq7tFNNLX5Q5UDo8z1csekDNKq9A+q3d1WW/x07T+7sJnB+HUizKG7FLgrGAfo/6OqiseO9lGuMkL1Pr1qHB5eH4B8yqE2di3BUWfq5S6J9yz5dZmpimTCnjikcMoExm80Z/xVgb5nFczKUXHa7d6pVxOUd9q+bYULzabb4sGxwKHRx3adJEoBWXOWWxgurWjSMwn1d6V+sOAclKoVYQexMMumEz9qXHDdrsg1s06QMwlgjoTnPwWavNDq88PaQVfsbaDldFy1266ugeSpRC7+6tWmtxtcNSMzvqaj0r9K8YRAeAglk0Zge0F5d/pqP39uRP2iTjbm7+or1jBpldxWQ/vdI4hlr3UeR5LezxVVynZo1/twLidpN8MIgq6i1gpA4zCUpMcvL/QlReTBez2E/3nSDOC1u30J1kobIjcn0tgWGzoLepC48Te81kVd7ZBcOjf+rBySDelzfroBeO2ZzRpzgNHEDIgYgjmODA/XqS6jRNyZgld7mLtBStH9swTaSNBY/83M+fkO+JOGaAOwYtHxXsMKwagt9sENtM1XZIe95GGRF9w== jason.dean.henderson@okstate.edu"'
