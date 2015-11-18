@@ -1,0 +1,12 @@
+---
+- name: Ensure home dir on dest server is 0777
+  sudo: yes
+  file: path=/home/{{user_name }} state=directory mode=0777 owner={{ user_name }} group={{ user_name }} recurse=yes
+- name: Sync {{ user_name }} files from {{ server }}.
+  command: rsync -e 'ssh -o StrictHostKeyChecking=no -o ForwardAgent=yes'  -az --ignore-times --omit-dir-times --no-perms --exclude '.ssh' {{ server }}:/home/{{ user_name }}/ /home/{{ user_name }}
+- name: Ensure directories are 0700
+  sudo: yes
+  file: path=/home/{{user_name }} state=directory mode=0700 owner={{ user_name }} group={{ user_name }} recurse=yes
+- name: Ensure files are 0600
+  sudo_user: "{{ user_name }}"
+  command: find /home/{{ user_name }} -type f -exec chmod 0600 {} \;

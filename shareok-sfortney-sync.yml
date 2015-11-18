@@ -1,0 +1,23 @@
+- hosts: 10.0.0.141
+  vars:
+    user_name: sfortney
+  tasks:
+  - name: Ensure home dir on source server is 0755
+    sudo_user: "{{ user_name }}"
+    file: path=/home/{{user_name }} state=directory mode=0755 owner={{ user_name }} group={{ user_name }} recurse=yes
+- hosts: 10.0.0.253
+  tasks:
+  - include: user-sync-tasks.yml
+    vars:
+      server: 10.0.0.141
+      user_name: sfortney
+- hosts: 10.0.0.141
+  vars:
+    user_name: sfortney
+  tasks:
+  - name: Ensure directories on source server are 0700
+    sudo_user: "{{ user_name }}"
+    file: path=/home/{{user_name }} state=directory mode=0700 owner={{ user_name }} group={{ user_name }} recurse=yes
+  - name: Ensure files on source server are 0600
+    sudo_user: "{{ user_name }}"
+    command: find /home/{{ user_name }} -type f -exec chmod 0600 {} \;

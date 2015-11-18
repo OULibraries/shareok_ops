@@ -1,5 +1,5 @@
 ec2_tag_Name: "lib-amz-shareok-5xtest"
-ec2_tag_App: "SHAREOK"
+ec2_tag_App: "ShareOK"
 ec2_tag_Unit: "Repository Services"
 ec2_tag_Workload: "Unprovisioned"
 ec2_instance_type: "t2.medium"

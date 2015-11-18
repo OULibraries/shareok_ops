@@ -1,5 +1,5 @@
 ---
-  - name: Sync {{ src }} from production.
+  - name: Sync {{ src }} from {{ server }}.
     sudo: no
     command: rsync -e 'ssh -o StrictHostKeyChecking=no -o ForwardAgent=yes'  -az --ignore-times --omit-dir-times --no-perms {{ server }}:{{ src }} {{ dest }}
   - name: Chown {{ dest }} to vagrant:wheel
