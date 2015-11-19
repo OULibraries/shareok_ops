@@ -3,6 +3,17 @@
 
 . /vagrant/etc/conf.sh
 
+
+
+
+
+if [[ $(whoami) != "vagrant" ]]; then
+    echo "This script must be run as the vagrant user!"
+    exit 1
+fi 
+
+
+
 #
 # build dspace as an unprivleged user
 #
